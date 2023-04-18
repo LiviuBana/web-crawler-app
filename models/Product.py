@@ -1,4 +1,10 @@
-class Product(object):
-    _name = str()
-    _price = str()
-    _availability = str()
+import scrapy
+
+
+class Product(scrapy.Item):
+    main_site=scrapy.Field()
+    title = scrapy.Field()
+    price = scrapy.Field()
+    url = scrapy.Field()
+    availability=scrapy.Field()
+

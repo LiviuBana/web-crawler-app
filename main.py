@@ -1,26 +1,30 @@
-# This is a sample Python script.
-from scrapy.crawler import CrawlerProcess
+import os
+import sys
+
+from scrapy.utils.log import configure_logging
+from twisted.trial import runner
+
+from productscrawling.spiders.DwynCrawler import DwynCrawler
+from productscrawling.spiders.RombizCrawler import RombizCrawler
+from productscrawling.spiders.VexioCrawler import VexioCrawler
 
 
-from neuralcrawling.neuralcrawling.spiders.ElectroHomeCrawler import ElectroHomeCrawler
-from neuralcrawling.neuralcrawling.spiders.RombizCrawler import RombizCrawler
-from neuralcrawling.neuralcrawling.spiders.crawling_spider import CrawlingSpider
+from scrapy.crawler import CrawlerRunner
+from scrapy.utils.project import get_project_settings
+from twisted.internet import defer, reactor
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+@defer.inlineCallbacks
+def crawl():
+    yield runner.crawl(DwynCrawler)
+    yield runner.crawl(VexioCrawler)
+    yield runner.crawl(RombizCrawler)
+    reactor.stop()
 
-
-
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    process = CrawlerProcess(settings={
-        "FEEDS": {
-            "items.json": {"format": "json"},
-        },
-    })
-    process.crawl(RombizCrawler)
-    process.start()
+    configure_logging(get_project_settings())
+    runner=CrawlerRunner(get_project_settings())
+    crawl()
+    reactor.run()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+

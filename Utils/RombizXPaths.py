@@ -1,5 +1,5 @@
 
-class RombizConstans():
+class RombizXPaths():
 
     product_box="//form[starts-with(@id,'product_box')]"
     product_name="//h2[@class='h5 name']/a/text()"

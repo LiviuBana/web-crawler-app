@@ -1,5 +1,5 @@
 
-class DwynConstants():
+class DwynXPaths():
 
     product_box="//div[@id='products-list']//form[starts-with(@id,'product_box')]"
     product_name="//h5[@class='name margin-bottom-xs']/a/text()"

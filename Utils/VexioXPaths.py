@@ -1,6 +1,6 @@
 
 
-class VexioConstans():
+class VexioXPaths():
 
     product_box="//div[@id='products-list']//form[starts-with(@id,'product_box')]"
     product_manufacturer="//div[@class='clearfix']/div[@class ='manufacturer pull-left']/text()"
@@ -10,3 +10,5 @@ class VexioConstans():
     product_availability="//div[starts-with(@class,'availability')]/text()"
 
     next_page="//li[@class='pagination-next']/a/@href"
+
+    img="//div[@class='product-details']//div[@class='item active']//img[@class='img-responsive']/@src"
