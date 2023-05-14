@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 import scrapy
 from parsel import Selector
 import sys, os
@@ -9,12 +11,22 @@ sys.path.append(os.path.join(os.path.abspath('../')))
 from models.Product import Product
 from Utils import VexioXPaths
 
+API_KEY='0a1ae3c6-9ad0-4ba0-a506-16b17f517275'
+
+def get_proxy_url(url):
+    payload={ 'api_key' : API_KEY, 'url' :url}
+    proxy_url='https://proxy.scrapeops.io/v1/?' + urlencode(payload)
+    return proxy_url
 
 class VexioCrawler(scrapy.Spider):
     name = "vexio_crawler"
-    allowed_domains = ["vexio.ro"]
+    #allowed_domains = ["vexio.ro","www.vexio.ro"]
 
-    start_urls = ["https://www.vexio.ro/smartphone/"]
+    #start_urls = ["https://www.vexio.ro/smartphone/"]
+
+    def start_requests(self):
+        start_url="https://www.vexio.ro/smartphone/"
+        yield scrapy.Request(url=get_proxy_url(start_url),callback=self.parse)
 
     def parse(self, response):
         item_links = []
@@ -46,7 +58,8 @@ class VexioCrawler(scrapy.Spider):
 
         next_page = response.xpath(VexioXPaths.VexioXPaths.next_page).get()
         if next_page:
-            yield scrapy.Request(next_page, callback=self.parse)
+            yield response.follow(get_proxy_url(next_page), callback=self.parse)
+            #yield response.follow(next_page,callback=self.parse)
 
 
 

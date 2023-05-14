@@ -35,12 +35,14 @@ class NeuralcrawlingPipeline(object):
     #id INT AUTO_INCREMENT PRIMARY KEY,
     def create_table(self):
         #self.curr.execute("""DROP TABLE IF EXISTS quotes_tb1""")
-        self.curr.execute("""CREATE TABLE IF NOT EXISTS items_tb(
+        self.curr.execute("""CREATE TABLE IF NOT EXISTS ItemsTableTest(
+            id MEDIUMINT NOT NULL AUTO_INCREMENT,
             site text,
             title text,
             price text,
             url text,
-            availability text
+            availability text,
+            PRIMARY KEY (id)
             )""")
 
     def process_item(self, item, spider):
@@ -49,7 +51,7 @@ class NeuralcrawlingPipeline(object):
 
     def store_db(self, item):
 
-        self.curr.execute("""INSERT into items_tb values (%s,%s,%s,%s,%s)""",(
+        self.curr.execute("""INSERT into ItemsTableTest values (NULL,%s,%s,%s,%s,%s)""",(
             item.get('main_site'),
             item.get('title'),
             item.get('price'),
