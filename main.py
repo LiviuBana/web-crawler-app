@@ -16,7 +16,7 @@ from twisted.internet import defer, reactor
 @defer.inlineCallbacks
 def crawl():
     yield runner.crawl(DwynCrawler)
-    #yield runner.crawl(VexioCrawler)
+    yield runner.crawl(VexioCrawler)
     yield runner.crawl(RombizCrawler)
     reactor.stop()
 

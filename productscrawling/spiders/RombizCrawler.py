@@ -4,6 +4,7 @@ import sys
 import scrapy
 from parsel import Selector
 
+from Utils.ProducerGetter import ProducerGetter
 from models.Product import Product
 
 sys.path.append(os.path.join(os.path.abspath('../')))
@@ -36,7 +37,10 @@ class RombizCrawler(scrapy.Spider):
             price= selector.xpath(RombizXPaths.RombizXPaths.product_price).get()\
                    .replace("\t","").replace("\n", "")
 
+            producer_getter=ProducerGetter()
 
+
+            product['producer']=producer_getter.get_producer(title)
             product['title'] = title
             product['price'] = price
             product['url'] = url

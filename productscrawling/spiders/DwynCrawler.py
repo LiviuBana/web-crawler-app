@@ -4,6 +4,7 @@ import sys
 import scrapy
 from parsel import Selector
 
+from Utils.ProducerGetter import ProducerGetter
 
 sys.path.append(os.path.join(os.path.abspath('../')))
 from models.Product import Product
@@ -36,6 +37,9 @@ class DwynCrawler(scrapy.Spider):
             url= selector.xpath(DwynXPaths.DwynXPaths.product_url).get()
             price= selector.xpath(DwynXPaths.DwynXPaths.product_price).get().replace("\t", "").replace("\n", "")
 
+            producer_getter = ProducerGetter()
+
+            product['producer'] = producer_getter.get_producer(title)
             product['title'] = title
             product['price'] = price
             product['url'] = url

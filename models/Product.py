@@ -2,9 +2,9 @@ import scrapy
 
 
 class Product(scrapy.Item):
-    main_site=scrapy.Field()
+    main_site = scrapy.Field()
+    producer = scrapy.Field()
     title = scrapy.Field()
     price = scrapy.Field()
     url = scrapy.Field()
-    availability=scrapy.Field()
-
+    availability = scrapy.Field()

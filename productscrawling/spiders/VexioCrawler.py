@@ -7,6 +7,8 @@ import sys, os
 from scrapy import Request
 from scrapy.loader import ItemLoader
 
+from Utils.ProducerGetter import ProducerGetter
+
 sys.path.append(os.path.join(os.path.abspath('../')))
 from models.Product import Product
 from Utils import VexioXPaths
@@ -47,8 +49,9 @@ class VexioCrawler(scrapy.Spider):
             url = selector.xpath(VexioXPaths.VexioXPaths.product_url).get()
             price = selector.xpath(VexioXPaths.VexioXPaths.product_price).get().replace("\t", "").replace("\n", "")
 
+            producer_getter = ProducerGetter()
 
-
+            product['producer'] = producer_getter.get_producer(title)
             product['title']=title
             product['price']=price
             product['url']=url
