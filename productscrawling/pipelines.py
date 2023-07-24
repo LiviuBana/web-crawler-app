@@ -39,6 +39,7 @@ class NeuralcrawlingPipeline(object):
             id MEDIUMINT NOT NULL AUTO_INCREMENT,
             site text,
             producer text,
+            model text,
             title text,
             price text,
             url text,
@@ -52,9 +53,10 @@ class NeuralcrawlingPipeline(object):
 
     def store_db(self, item):
 
-        self.curr.execute("""INSERT into ItemsTableTest values (NULL,%s,%s,%s,%s,%s,%s)""",(
+        self.curr.execute("""INSERT into ItemsTableTest values (NULL,%s,%s,%s,%s,%s,%s,%s)""",(
             item.get('main_site'),
             item.get('producer'),
+            item.get('model'),
             item.get('title'),
             item.get('price'),
             item.get('url'),

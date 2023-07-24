@@ -4,7 +4,7 @@ import sys
 import scrapy
 from parsel import Selector
 
-from Utils.ProducerGetter import ProducerGetter
+from Utils.PhoneDetailsGetter import PhoneDetailsGetter
 from models.Product import Product
 
 sys.path.append(os.path.join(os.path.abspath('../')))
@@ -23,31 +23,35 @@ class RombizCrawler(scrapy.Spider):
         for product_box in product_boxes:
             selector = Selector(product_box)
 
-            availability=selector.xpath(RombizXPaths.RombizXPaths.product_availability).get()\
-                .replace("\t","").replace("\n", "")
+            availability = selector.xpath(RombizXPaths.RombizXPaths.product_availability).get() \
+                .replace("\t", "").replace("\n", "")
 
             if "nu este in stoc" in availability.casefold():
                 continue
 
-            product=Product()
+            product = Product()
 
-            product['main_site']="rombiz.ro"
-            title= selector.xpath(RombizXPaths.RombizXPaths.product_name).get().replace("\t", "").replace("\n", "")
-            url= selector.xpath(RombizXPaths.RombizXPaths.product_url).get()
-            price= selector.xpath(RombizXPaths.RombizXPaths.product_price).get()\
-                   .replace("\t","").replace("\n", "")
+            product['main_site'] = "rombiz.ro"
+            title = selector.xpath(RombizXPaths.RombizXPaths.product_name).get().replace("\t", "").replace("\n", "")
+            url = selector.xpath(RombizXPaths.RombizXPaths.product_url).get()
+            price = selector.xpath(RombizXPaths.RombizXPaths.product_price).get() \
+                .replace("\t", "").replace("\n", "")
 
-            producer_getter=ProducerGetter()
+            phone_details_getter = PhoneDetailsGetter()
+            phone_details = phone_details_getter.get_details(title)
 
+            if phone_details is None:
+                continue
 
-            product['producer']=producer_getter.get_producer(title)
+            product['producer'] = phone_details[0]
+            product['model'] = phone_details[1]
             product['title'] = title
             product['price'] = price
             product['url'] = url
-            product['availability']=availability
+            product['availability'] = availability
 
             yield product
 
         next_page = response.xpath(RombizXPaths.RombizXPaths.next_page).get()
         if next_page:
-            yield scrapy.Request(next_page,callback= self.parse)
+            yield scrapy.Request(next_page, callback=self.parse)

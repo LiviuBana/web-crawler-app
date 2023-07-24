@@ -4,7 +4,7 @@ import sys
 import scrapy
 from parsel import Selector
 
-from Utils.ProducerGetter import ProducerGetter
+from Utils.PhoneDetailsGetter import PhoneDetailsGetter
 
 sys.path.append(os.path.join(os.path.abspath('../')))
 from models.Product import Product
@@ -23,23 +23,26 @@ class DwynCrawler(scrapy.Spider):
         for item_link in item_links:
             selector = Selector(item_link)
 
-
-            availability= selector.xpath(
-                    DwynXPaths.DwynXPaths.product_availability).get().replace("\t", "").replace("\n", "")
+            availability = selector.xpath(
+                DwynXPaths.DwynXPaths.product_availability).get().replace("\t", "").replace("\n", "")
 
             if "nu este in stoc" in availability.casefold():
                 continue
 
-            product=Product()
-            product['main_site']="dwyn.ro"
+            product = Product()
+            product['main_site'] = "dwyn.ro"
 
-            title= selector.xpath(DwynXPaths.DwynXPaths.product_name).get().replace("\t", "").replace("\n", "")
-            url= selector.xpath(DwynXPaths.DwynXPaths.product_url).get()
-            price= selector.xpath(DwynXPaths.DwynXPaths.product_price).get().replace("\t", "").replace("\n", "")
+            title = selector.xpath(DwynXPaths.DwynXPaths.product_name).get().replace("\t", "").replace("\n", "")
+            url = selector.xpath(DwynXPaths.DwynXPaths.product_url).get()
+            price = selector.xpath(DwynXPaths.DwynXPaths.product_price).get().replace("\t", "").replace("\n", "")
 
-            producer_getter = ProducerGetter()
+            phone_details_getter = PhoneDetailsGetter()
+            phone_details = phone_details_getter.get_details(title)
 
-            product['producer'] = producer_getter.get_producer(title)
+            if phone_details is None:
+                continue
+            product['producer'] = phone_details[0]
+            product['model'] = phone_details[1]
             product['title'] = title
             product['price'] = price
             product['url'] = url
