@@ -37,6 +37,6 @@ class PhoneDetailsGetter:
                 model = (has_model.group())
                 model = model.replace(producer, '').replace(',', '')
 
-                return producer, model
+                return producer.strip(), model.strip()
 
         return None
