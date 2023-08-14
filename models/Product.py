@@ -9,3 +9,4 @@ class Product(scrapy.Item):
     price = scrapy.Field()
     url = scrapy.Field()
     availability = scrapy.Field()
+    logo_url = scrapy.Field()

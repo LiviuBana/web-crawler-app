@@ -44,6 +44,7 @@ class NeuralcrawlingPipeline(object):
             price text,
             url text,
             availability text,
+            logo text,
             PRIMARY KEY (id)
             )""")
 
@@ -53,14 +54,15 @@ class NeuralcrawlingPipeline(object):
 
     def store_db(self, item):
 
-        self.curr.execute("""INSERT into ItemsTableTest values (NULL,%s,%s,%s,%s,%s,%s,%s)""",(
+        self.curr.execute("""INSERT into ItemsTableTest values (NULL,%s,%s,%s,%s,%s,%s,%s,%s)""",(
             item.get('main_site'),
             item.get('producer'),
             item.get('model'),
             item.get('title'),
             item.get('price'),
             item.get('url'),
-            item.get('availability')
+            item.get('availability'),
+            item.get('logo_url')
         ))
 
         self.conn.commit()

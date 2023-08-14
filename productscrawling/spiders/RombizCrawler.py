@@ -31,7 +31,8 @@ class RombizCrawler(scrapy.Spider):
 
             product = Product()
 
-            product['main_site'] = "rombiz.ro"
+            product['main_site'] = "https://www.rombiz.ro/"
+            product['logo_url'] = "https://p1.akcdn.net/partnerlogosmall/82915.jpg"
             title = selector.xpath(RombizXPaths.RombizXPaths.product_name).get().replace("\t", "").replace("\n", "")
             url = selector.xpath(RombizXPaths.RombizXPaths.product_url).get()
             price = selector.xpath(RombizXPaths.RombizXPaths.product_price).get() \

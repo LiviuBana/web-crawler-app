@@ -44,7 +44,8 @@ class VexioCrawler(scrapy.Spider):
             if "nu este in stoc" in availability.casefold():
                 continue
             product = Product()
-            product['main_site'] = "vexio.ro"
+            product['main_site'] = "https://www.vexio.ro/"
+            product['logo_url'] = "https://p1.akcdn.net/partnerlogosmall/41065.jpg"
 
             title = (selector.xpath(VexioXPaths.VexioXPaths.product_manufacturer).get() + " " +
                      selector.xpath(VexioXPaths.VexioXPaths.product_name).get()).replace("\t", "").replace("\n", "")

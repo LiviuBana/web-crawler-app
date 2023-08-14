@@ -30,7 +30,8 @@ class DwynCrawler(scrapy.Spider):
                 continue
 
             product = Product()
-            product['main_site'] = "dwyn.ro"
+            product['main_site'] = "https://www.dwyn.ro/"
+            product['logo_url'] = "https://p1.akcdn.net/partnerlogosmall/35559.jpg"
 
             title = selector.xpath(DwynXPaths.DwynXPaths.product_name).get().replace("\t", "").replace("\n", "")
             url = selector.xpath(DwynXPaths.DwynXPaths.product_url).get()
