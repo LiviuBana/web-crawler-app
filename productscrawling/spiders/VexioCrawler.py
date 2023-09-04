@@ -13,7 +13,7 @@ sys.path.append(os.path.join(os.path.abspath('../')))
 from models.Product import Product
 from Utils import VexioXPaths
 
-API_KEY = '0a1ae3c6-9ad0-4ba0-a506-16b17f517275'
+API_KEY = '9d620b9d-ba78-402a-90df-95465184cc14'
 
 
 def get_proxy_url(url):
@@ -50,7 +50,9 @@ class VexioCrawler(scrapy.Spider):
             title = (selector.xpath(VexioXPaths.VexioXPaths.product_manufacturer).get() + " " +
                      selector.xpath(VexioXPaths.VexioXPaths.product_name).get()).replace("\t", "").replace("\n", "")
             url = selector.xpath(VexioXPaths.VexioXPaths.product_url).get()
-            price = selector.xpath(VexioXPaths.VexioXPaths.product_price).get().replace("\t", "").replace("\n", "")
+            price = selector.xpath(VexioXPaths.VexioXPaths.product_price).get().replace("\t", "").replace("\n",
+                                                                                                          "").replace(
+                "lei", "").strip()
 
             phone_details_getter = PhoneDetailsGetter()
             phone_details = phone_details_getter.get_details(title)

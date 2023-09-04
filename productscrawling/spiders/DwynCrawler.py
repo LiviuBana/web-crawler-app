@@ -35,7 +35,9 @@ class DwynCrawler(scrapy.Spider):
 
             title = selector.xpath(DwynXPaths.DwynXPaths.product_name).get().replace("\t", "").replace("\n", "")
             url = selector.xpath(DwynXPaths.DwynXPaths.product_url).get()
-            price = selector.xpath(DwynXPaths.DwynXPaths.product_price).get().replace("\t", "").replace("\n", "")
+            price = selector.xpath(DwynXPaths.DwynXPaths.product_price).get().replace("\t", "").replace("\n",
+                                                                                                        "").replace(
+                "lei", "").strip()
 
             phone_details_getter = PhoneDetailsGetter()
             phone_details = phone_details_getter.get_details(title)
