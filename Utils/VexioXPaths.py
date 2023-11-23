@@ -1,14 +1,10 @@
+PRODUCT_BOX = "//div[@id='products-list']//form[starts-with(@id,'product_box')]"
+PRODUCT_MANUFACTURER = "//div[@class='clearfix']/div[@class ='manufacturer pull-left']/text()"
+PRODUCT_NAME = "//h2[@class='name']/a/@title"
+PRODUCT_URL = "//a/@href"
+PRODUCT_PRICE = "//div[starts-with(@class,'pull-left')]/strong/text()"
+PRODUCT_AVAILABILITY = "//div[starts-with(@class,'availability')]/text()"
 
+NEXT_PAGE = "//li[@class='pagination-next']/a/@href"
 
-class VexioXPaths():
-
-    product_box="//div[@id='products-list']//form[starts-with(@id,'product_box')]"
-    product_manufacturer="//div[@class='clearfix']/div[@class ='manufacturer pull-left']/text()"
-    product_name="//h2[@class='name']/a/@title"
-    product_url="//a/@href"
-    product_price="//div[starts-with(@class,'pull-left')]/strong/text()"
-    product_availability="//div[starts-with(@class,'availability')]/text()"
-
-    next_page="//li[@class='pagination-next']/a/@href"
-
-    img="//div[@class='product-details']//div[@class='item active']//img[@class='img-responsive']/@src"
+IMG = "//div[@class='product-details']//div[@class='item active']//img[@class='img-responsive']/@src"

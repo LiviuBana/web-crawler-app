@@ -35,11 +35,11 @@ class VexioCrawler(scrapy.Spider):
 
     def parse(self, response):
         item_links = []
-        item_links = response.xpath(VexioXPaths.VexioXPaths.product_box).getall()
+        item_links = response.xpath(VexioXPaths.PRODUCT_BOX).getall()
         for item_link in item_links:
             selector = Selector(item_link)
             availability = selector.xpath(
-                VexioXPaths.VexioXPaths.product_availability).get().replace("\t", "").replace("\n", "")
+                VexioXPaths.VexioXPaths.PRODUCT_AVAILABILITY).get().replace("\t", "").replace("\n", "")
 
             if "nu este in stoc" in availability.casefold():
                 continue
@@ -47,10 +47,10 @@ class VexioCrawler(scrapy.Spider):
             product['main_site'] = "https://www.vexio.ro/"
             product['logo_url'] = "https://p1.akcdn.net/partnerlogosmall/41065.jpg"
 
-            title = (selector.xpath(VexioXPaths.VexioXPaths.product_manufacturer).get() + " " +
-                     selector.xpath(VexioXPaths.VexioXPaths.product_name).get()).replace("\t", "").replace("\n", "")
-            url = selector.xpath(VexioXPaths.VexioXPaths.product_url).get()
-            price = selector.xpath(VexioXPaths.VexioXPaths.product_price).get().replace("\t", "").replace("\n",
+            title = (selector.xpath(VexioXPaths.PRODUCT_MANUFACTURER).get() + " " +
+                     selector.xpath(VexioXPaths.PRODUCT_NAME).get()).replace("\t", "").replace("\n", "")
+            url = selector.xpath(VexioXPaths.PRODUCT_URL).get()
+            price = selector.xpath(VexioXPaths.PRODUCT_PRICE).get().replace("\t", "").replace("\n",
                                                                                                           "").replace(
                 "lei", "").strip()
 
@@ -69,7 +69,7 @@ class VexioCrawler(scrapy.Spider):
 
             yield product
 
-        next_page = response.xpath(VexioXPaths.VexioXPaths.next_page).get()
+        next_page = response.xpath(VexioXPaths.NEXT_PAGE).get()
         if next_page:
             yield response.follow(get_proxy_url(next_page), callback=self.parse)
             # yield response.follow(next_page,callback=self.parse)

@@ -19,11 +19,11 @@ class RombizCrawler(scrapy.Spider):
 
     def parse(self, response):
         product_boxes = []
-        product_boxes = response.xpath(RombizXPaths.RombizXPaths.product_box).getall()
+        product_boxes = response.xpath(RombizXPaths.PRODUCT_BOX).getall()
         for product_box in product_boxes:
             selector = Selector(product_box)
 
-            availability = selector.xpath(RombizXPaths.RombizXPaths.product_availability).get() \
+            availability = selector.xpath(RombizXPaths.PRODUCT_AVAILABILITY).get() \
                 .replace("\t", "").replace("\n", "")
 
             if "nu este in stoc" in availability.casefold():
@@ -33,9 +33,9 @@ class RombizCrawler(scrapy.Spider):
 
             product['main_site'] = "https://www.rombiz.ro/"
             product['logo_url'] = "https://p1.akcdn.net/partnerlogosmall/82915.jpg"
-            title = selector.xpath(RombizXPaths.RombizXPaths.product_name).get().replace("\t", "").replace("\n", "")
-            url = selector.xpath(RombizXPaths.RombizXPaths.product_url).get()
-            price = selector.xpath(RombizXPaths.RombizXPaths.product_price).get() \
+            title = selector.xpath(RombizXPaths.PRODUCT_NAME).get().replace("\t", "").replace("\n", "")
+            url = selector.xpath(RombizXPaths.PRODUCT_URL).get()
+            price = selector.xpath(RombizXPaths.PRODUCT_PRICE).get() \
                 .replace("\t", "").replace("\n", "").replace("lei", "").strip()
 
             phone_details_getter = PhoneDetailsGetter()
@@ -53,6 +53,6 @@ class RombizCrawler(scrapy.Spider):
 
             yield product
 
-        next_page = response.xpath(RombizXPaths.RombizXPaths.next_page).get()
+        next_page = response.xpath(RombizXPaths.NEXT_PAGE).get()
         if next_page:
             yield scrapy.Request(next_page, callback=self.parse)

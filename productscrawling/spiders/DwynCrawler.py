@@ -19,12 +19,12 @@ class DwynCrawler(scrapy.Spider):
 
     def parse(self, response):
         item_links = []
-        item_links = response.xpath(DwynXPaths.DwynXPaths.product_box).getall()
+        item_links = response.xpath(DwynXPaths.PRODUCT_BOX).getall()
         for item_link in item_links:
             selector = Selector(item_link)
 
             availability = selector.xpath(
-                DwynXPaths.DwynXPaths.product_availability).get().replace("\t", "").replace("\n", "")
+                DwynXPaths.PRODUCT_AVAILABILITY).get().replace("\t", "").replace("\n", "")
 
             if "nu este in stoc" in availability.casefold():
                 continue
@@ -33,9 +33,9 @@ class DwynCrawler(scrapy.Spider):
             product['main_site'] = "https://www.dwyn.ro/"
             product['logo_url'] = "https://p1.akcdn.net/partnerlogosmall/35559.jpg"
 
-            title = selector.xpath(DwynXPaths.DwynXPaths.product_name).get().replace("\t", "").replace("\n", "")
-            url = selector.xpath(DwynXPaths.DwynXPaths.product_url).get()
-            price = selector.xpath(DwynXPaths.DwynXPaths.product_price).get().replace("\t", "").replace("\n",
+            title = selector.xpath(DwynXPaths.PRODUCT_NAME).get().replace("\t", "").replace("\n", "")
+            url = selector.xpath(DwynXPaths.PRODUCT_URL).get()
+            price = selector.xpath(DwynXPaths.PRODUCT_PRICE).get().replace("\t", "").replace("\n",
                                                                                                         "").replace(
                 "lei", "").strip()
 
@@ -53,6 +53,6 @@ class DwynCrawler(scrapy.Spider):
 
             yield product
 
-        next_page = response.xpath(DwynXPaths.DwynXPaths.next_page).get()
+        next_page = response.xpath(DwynXPaths.NEXT_PAGE).get()
         if next_page:
             yield scrapy.Request(next_page, callback=self.parse)
